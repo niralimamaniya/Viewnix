@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toggleMenu } from '../utils/appSlice';
 import Logo from "../assests/viewnix_logo.png";
 import { YOUTUBE_SEARCH_API } from '../utils/constants';
+import { cacheResults } from '../utils/searchSlice';
 
 const Header = () => {
 
@@ -10,11 +11,20 @@ const Header = () => {
     const [ suggestion, setSuggestion ] = useState([]);
     const [ showSuggestions, setShowSuggestions ] = useState(false);
 
+    const searchCache = useSelector(store=>store.search);
+
+    const dispatch = useDispatch();
+
     useEffect(()=> {
         // make an API call after every key press
         // if the difference between two API calls is < 200ms then decline the API call
         const timer = setTimeout(() => {
-            getSearchSuggestions();
+            if(searchCache[searchQuery]){
+                setSuggestion(searchCache[searchQuery]);
+            } else {
+                getSearchSuggestions();
+            }
+            
         }, 200);
 
         return () => {
@@ -29,8 +39,14 @@ const Header = () => {
         const json = await data.json();
         setSuggestion(json[1]);
 
+        // update cache
+        dispatch(
+            cacheResults({
+                [searchQuery] : json[1],
+            })
+        );
+
     }
-    const dispatch = useDispatch();
 
     const toggleMenuHandler = () => {
         dispatch(toggleMenu())
