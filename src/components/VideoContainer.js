@@ -18,9 +18,13 @@ const VideoContainer = () => {
   }
 
   return (
-      <div className='flex flex-wrap'>
+      <div className='grid justify-center justify-items-center mt-10 grid-cols-[repeat(auto-fill,minmax(310px,_1fr))] max-xl:grid-cols-[repeat(auto-fill,minmax(250px,_1fr))] gap-[2rem_1rem] 
+      pt-10 px-8 pb-4 overflow-y-scroll no-scrollbar'>
         {videos.map(video => 
-          <Link key={video.id} to={"/watch?v="+video.id}>
+          <Link 
+            key={video.id} 
+            to={"/watch?v="+video.id}
+          >
             <VideoCard  
               info={video}
             />

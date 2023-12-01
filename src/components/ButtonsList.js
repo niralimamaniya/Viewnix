@@ -1,12 +1,10 @@
 import React from 'react'
 import Button from './Button'
-
+import { buttonsList } from '../utils/helper'
 const ButtonsList = () => {
 
-  const buttonsList = ["All","Mixes","Music","Computer Programming","T-Series","Movies","Live","Sports","Gaming","Trending","News"]
-
   return (
-    <div className='flex'>
+    <div className='flex fixed bg-white px-8 py-2 w-full'>
       {buttonsList.map((list) => (
           <Button name={list}/>
       ))}
